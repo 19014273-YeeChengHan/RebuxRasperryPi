@@ -1,0 +1,15 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings (False)
+buzzer= 21
+buzzstate = False
+GPIO.setup(buzzer, GPIO.OUT)
+
+while True:
+
+   buzzstate = not buzzstate
+   GPIO.output(buzzer, buzzstate
+)
+   time.sleep(1)
