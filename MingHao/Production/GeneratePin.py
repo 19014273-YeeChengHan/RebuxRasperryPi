@@ -1,6 +1,6 @@
 import random
 import datetime
-import mysql
+import mysql.connector
 import os
 from twilio.rest import Client
 import getpass
