@@ -12,7 +12,7 @@ import getpass
 #Connecting to DB
 conn = mysql.connector.connect(
     host = "localhost",
-    user = "rebuxpshpdbadmin",
+    user = "rebuxphpdbadmin",
     password = "rebuxphpdbadminpassword",
     database = "RebuxDB"
 )
@@ -143,7 +143,7 @@ while userMenuInput != 2:
         client.messages.create(
                 body = actualMessage,
                 to = "+6588159408",
-                from_ = "16314961976"
+                from_ = "+16314961976"
             )
         
     
