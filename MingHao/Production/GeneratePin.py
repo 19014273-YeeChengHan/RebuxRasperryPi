@@ -1,6 +1,6 @@
 import random
 import datetime
-import mysql.connector
+import mysql
 import os
 from twilio.rest import Client
 import getpass
@@ -12,7 +12,7 @@ import getpass
 #Connecting to DB
 conn = mysql.connector.connect(
     host = "localhost",
-    user = "rebuxphpdbadmin",
+    user = "rebuxpshpdbadmin",
     password = "rebuxphpdbadminpassword",
     database = "RebuxDB"
 )
