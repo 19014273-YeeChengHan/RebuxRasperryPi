@@ -131,7 +131,7 @@ while userMenuInput != 2:
 
         #Send Pin to User
         twilioAccSSID = "ACf5da1645597d0798f4ff3be7c16dfeb4"
-        twilioAccTOKEN = "d0be0aae9bb8c7ba9a016075df62fcd6"
+        twilioAccTOKEN = "5bfb72d945db84a6cf489d8f648e8c82"
         messageFormat = "REBUX: Dear Finder, Use {0} as a One-Time Password for Locker Opening (do NOT share it with anyone). This OTP expires at {1} SG Time."
         otpExpireDateTime = currentDateTime + datetime.timedelta(minutes=15)
         strOtpExpireDateTime = otpExpireDateTime.strftime('%Y-%m-%d %H:%M:%S')
