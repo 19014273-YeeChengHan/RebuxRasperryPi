@@ -8,7 +8,7 @@ twilioAccTOKEN = '5bfb72d945db84a6cf489d8f648e8c82'
 client = Client(twilioAccSSID,twilioAccTOKEN)
 
 client.messages.create(
-        body = "I love you Keen she is my baby girl",
+        body = "TEST SMS MESSAGE!!!",
         to = "+6588159408",
         from_ = "16314961976"
     )
