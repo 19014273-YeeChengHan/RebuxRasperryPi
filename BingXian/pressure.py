@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-# Written by Limor "Ladyada" Fried for Adafruit Industries, (c) 2015
-# This code is released into the public domain
-
 import time
 import os
 import RPi.GPIO as GPIO
@@ -67,37 +64,40 @@ tolerance = 5       # to keep from being jittery we'll only change
                     # volume when the pot has moved more than 5 'counts'
 
 while True:
-        # we'll assume that the pot didn't move
-        trim_pot_changed = False
+      # we'll assume that the pot didn't move
+      trim_pot_changed = False
 
-        # read the analog pin
-        trim_pot = readadc(potentiometer_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
-        # how much has it changed since the last read?
-        pot_adjust = abs(trim_pot - last_read)
+      # read the analog pin
+      trim_pot = readadc(potentiometer_adc, SPICLK, SPIMOSI, SPIMISO, SPICS)
+      # how much has it changed since the last read?
+      pot_adjust = abs(trim_pot - last_read)
 
-        if DEBUG:
-                print ("Force:", trim_pot)
-                print ("Force Changed:", pot_adjust)
-                print ("Last Force Read: ", last_read)
+      if DEBUG:
+              print ("Force:", trim_pot)
+              print ("Force Changed:", pot_adjust)
+              print ("Last Force Read: ", last_read)
+              
+      if ( pot_adjust > tolerance ):
+              trim_pot_changed = True
 
-        if ( pot_adjust > tolerance ):
-               trim_pot_changed = True
+      if DEBUG:
+              print ("Force Changed"), trim_pot_changed
 
-        if DEBUG:
-                print ("Force Changed"), trim_pot_changed
-
-        if ( trim_pot_changed ):
-                set_volume = trim_pot / 10.24           # convert 10bit adc0 (0-1024) trim pot read into 0-100 volume level
-                set_volume = round(set_volume)          # round out decimal value
-                set_volume = int(set_volume)            # cast volume as integer
-
-
-                set_vol_cmd = 'sudo amixer cset numid=1 -- {volume}% > /dev/null' .format(volume = set_volume)
-                os.system(set_vol_cmd)  # set volume
+      
+      if ( trim_pot_changed ):
+              set_volume = trim_pot / 10.24           # convert 10bit adc0 (0-1024) trim pot read into 0-100 volume level
+              set_volume = round(set_volume)          # round out decimal value
+              set_volume = int(set_volume)            # cast volume as integer
 
 
-                # save the potentiometer reading for the next loop
-                last_read = trim_pot
+              set_vol_cmd = 'sudo amixer cset numid=1 -- {volume}% > /dev/null' .format(volume = set_volume)
+              os.system(set_vol_cmd)  # set volume
 
-        # hang out and do nothing for a half second
-        time.sleep(0.5)
+
+              # save the potentiometer reading for the next loop
+              last_read = trim_pot
+
+      # hang out and do nothing for a half second
+      time.sleep(0.5)
+
+
