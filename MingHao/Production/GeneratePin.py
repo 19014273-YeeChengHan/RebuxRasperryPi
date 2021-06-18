@@ -54,17 +54,20 @@ while userMenuInput != 2:
             print("_______________________________________")
             
             userInputID = input("Please Enter Your User ID: ")
-	    #User's Input Password hidden via Getpass libary for increase security
+	        #User's Input Password hidden via Getpass libary for increase security
             userInputPassword = getpass.getpass(prompt='Please Enter Your Password: ')
+            
+            #Hashing User input via SHA 256 for comparrison with Database, Enhanced Security
             hash_object = hashlib.sha256(userInputPassword.encode())
-            hex_dig = hash_object.hexdigest()
+            userInputPasswordHexDigi = hash_object.hexdigest()
+            
             if any(s.isdigit() == False for s in userInputID):
                 print ("** USER ID SHOULD NOT CONTAIN LETTERS OR SPECIAL CHARACTERS, PLEASE TRY AGAIN !!! **")
 
             else:
                  #Check if User ID and Password is Valid
                 isValidUserQuery = "SELECT * FROM Users WHERE user_id = {0} AND password = '{1}';"
-                fullIsValidUserQuery = isValidUserQuery.format(userInputID, hex_dig)
+                fullIsValidUserQuery = isValidUserQuery.format(userInputID, userInputPasswordHexDigi)
 
                 cursor.execute(fullIsValidUserQuery)
 
