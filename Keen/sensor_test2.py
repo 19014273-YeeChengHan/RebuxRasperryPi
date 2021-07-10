@@ -57,9 +57,13 @@ try:
               seperator = ', '
 
               # number of elements as input
-              number_of_description = int(input("Enter the number of descriptions you would like to give the item: "))  
+              number_of_description = int(input("Enter the number of descriptions you would like to give the item. Minimum and maximum number of descriptions is 4 and 7 respectively. : "))  
               
-
+              while number_of_description < 4 or number_of_description > 7 :
+                  print("Error occured: Number of description cannot be less than 4 or more than 7. Please try again.")
+                  number_of_description = int(input("Enter the number of descriptions you would like to give the item. Minimum and maximum number of descriptions is 4 and 7 respectively. : "))
+                  
+                  
               
               
               # iterating till the range
@@ -112,3 +116,4 @@ except KeyboardInterrupt:
     
     
     
+

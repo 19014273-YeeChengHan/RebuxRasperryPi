@@ -1,10 +1,22 @@
 import RPi.GPIO as GPIO
 import time
+
+
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
+
+#Declare Variable for GPIO Pins
 TRIG=23
 ECHO=24
-while True:
+
+#Declare Other Variables
+i = 0
+
+#Ask User for Number of Sides Item has
+user_input = int(input('Please enter number of sides, needed to be recorded: '))
+
+while i < user_input:
     print ("Measuring....")
     GPIO.setup(TRIG,GPIO.OUT)
     GPIO.setup(ECHO,GPIO.IN)
@@ -28,4 +40,4 @@ while True:
     distance=round(distance,2)
     print ("DISTANCE :" , distance,"cm" )
     time.sleep(2)  
-
+    i = i + 1
