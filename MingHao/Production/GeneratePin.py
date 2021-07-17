@@ -20,6 +20,13 @@ conn = mysql.connector.connect(
 
 cursor = conn.cursor()
 
+#Pre-Requisite Cleanup (NEEDED AS THROUGH TESTING AUTO INCREMENT VALUE WILL KEEP RISING EVEN WITH DELETION OF ROWS IN BETWEEN AI DOESN'T RESET ON ITS OWN)
+autoIncrementCleanUpPinSession =  "ALTER TABLE `Pin Session` AUTO_INCREMENT = 1"
+autoIncrementCleanUpSession = "ALTER TABLE Session AUTO_INCREMENT = 1"
+cursor.execute(autoIncrementCleanUpPinSession)
+cursor.execute(autoIncrementCleanUpSession)
+
+conn.commit()
 
 #Asking For Menu Input Choice
 isAuthorised = False
@@ -54,7 +61,8 @@ while userMenuInput != 2:
             print("_______________________________________")
             
             userInputID = input("Please Enter Your User ID: ")
-	        #User's Input Password hidden via Getpass libary for increase security
+
+	    #User's Input Password hidden via Getpass libary for increase security
             userInputPassword = getpass.getpass(prompt='Please Enter Your Password: ')
             
             #Hashing User input via SHA 256 for comparrison with Database, Enhanced Security
@@ -119,19 +127,55 @@ while userMenuInput != 2:
             else:
                 pin = pin + str(singleRandomPinDigi)
                 i = i + 1
+        '''
+        Asking for User Input Item ID, HOWEVER DO TAKE NOTE THAT THIS SCRIPT WAS SUPPOSED TO RUN ON TOP OF INITAL PHASE 1 COMPLETION, WHERE FORMS ARE COLLECTED
+        AND HENCE ITEM ID SHOULD ALREADY BE GENERATED THEN BY THE WEBSITE DEVELOPED IN PHASE 1 AND SAVED NEATLY INTO TEXT DOCUMENTS FORMS OF ITEM REPORTS
+        '''
+        
+        itemIDFound = False
+
+        while itemIDFound == False:
+
+            print("_______________________________________")
+            print("Enter Item ID")
+            print("_______________________________________")
+            userInputItemID = int(input("Please Enter Item ID: "))
+
+            #Verficiation that Item ID indeed exist in DB
+
+            isValidItemIDQuery = "SELECT item_id FROM Item WHERE item_id = {0};"
+            fullIsValidItemIDQuery = isValidItemIDQuery.format(userInputItemID)
+            cursor.execute(fullIsValidItemIDQuery)
+ 
+            result = cursor.fetchall()
+
+            #Item ID Found
+            if len(result) == 1:
+                itemIDFound = True
+
+            #Item ID NOT Found
+            else:
+                print("** INVALID ITEM ID, PLEASE TRY AGAIN !!! **")
 
 
-        #Updating Pin Table with Newly Generated Pin
+        #Codes below do the following
+        #1. QUERY 1 = Inserting into "Pin" Table with deatials Newly Generated Pin
+        #2. QUERY 2 = Inserting into "Pin" Session Table with details of pin with relevance to user whom created reported the lost item (Phase1) which hence is reciving the generated pin
+        #3. QUERY 3 = Inserting into "Session" Tsble with details of session (creating session basically). Sesssion details are filled in with corresponds to pin session id used for locker session.
+
         currentDateTime = datetime.datetime.now()
         stringCurrentDateTime = currentDateTime.strftime('%Y-%m-%d %H:%M:%S')
 
         query1 = "INSERT INTO Pin (pin_id, generate_date_time) VALUES('{0}', '{1}');"
-        query2 = "INSERT INTO `Pin Session` (pinsession_id, user_id, pin_id, generate_date_time, use_date_time, status) VALUES(NULL, '{0}', '{1}', '{2}', NULL, 'Reported');"
+        query2 = "INSERT INTO `Pin Session` (pinsession_id, user_id, pin_id, generate_date_time, use_date_time, status) VALUES(NULL, '{0}', '{1}', '{2}', NULL, 'Generated');"
+        query3 = "INSERT INTO Session (session_id, user_id, item_id, pinsession_id, type, status) VALUES(NULL, '{0}', '{1}', (SELECT pinsession_id FROM `Pin Session` ORDER BY pinsession_id DESC LIMIT 1), 'Finder', 'Reported');" 
         fullInsertQuery1 = query1.format(pin, stringCurrentDateTime)
         fullInsertQuery2 = query2.format(userInputID, pin, stringCurrentDateTime)
+        fullInsertQuery3 = query3.format(userInputID, userInputItemID)
 
         cursor.execute(fullInsertQuery1)
         cursor.execute(fullInsertQuery2)
+        cursor.execute(fullInsertQuery3)
 
 
         #Send Pin to User
