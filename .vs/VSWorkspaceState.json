@@ -1,8 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\MingHao\\Production"
+    "\\BingXian",
+    "\\ChengHan",
+    "\\Keen",
+    "\\MingHao",
+    "\\MingHao\\Production",
+    "\\MingHao\\Test"
   ],
-  "SelectedNode": "\\ChengHan",
+  "SelectedNode": "\\ChengHan\\testing.py",
   "PreviewInSolutionExplorer": false
 }
