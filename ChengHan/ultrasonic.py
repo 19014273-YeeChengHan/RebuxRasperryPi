@@ -35,9 +35,11 @@ box_length = 20.5
 final_list = []
 
 #Ask User for Number of Sides Item has
-user_input = int(input('Please enter number of sides, needed to be recorded: '))
 
-while i < user_input:
+user_input = int(input('Please enter number of sides, needed to be recorded: '))
+if user_input >3 :
+    print("Please do not input more than 3 sides")
+while i < user_input and user_input <3:
     print ("Measuring Side "  + str((i+1)) + "........")
 
     #Initalise Varaiables for inner loop use.
@@ -121,7 +123,7 @@ large_box_area = 4310.1
 
 area_of_item_scanned = multiplyList(final_list)
 
-if (area_of_item_scanned < small_box_area):
+if (area_of_item_scanned < small_box_area and user_input <3):
     print('─' * 20)
     print("Dimension")
     print('─' * 20)
@@ -136,7 +138,7 @@ if (area_of_item_scanned < small_box_area):
     print('─' * 20)
     print("Item Category: Small")
 
-elif (area_of_item_scanned <  medium_box_area):
+elif (area_of_item_scanned <  medium_box_area and user_input <3):
     print('─' * 20)
     print("Dimension")
     print('─' * 20)
@@ -151,7 +153,7 @@ elif (area_of_item_scanned <  medium_box_area):
     print('─' * 20)
     print("Item Category: Medium")
 
-elif (area_of_item_scanned < large_box_area):
+elif (area_of_item_scanned < large_box_area and user_input <3):
     print('─' * 20)
     print("Dimension")
     print('─' * 20)
@@ -165,9 +167,8 @@ elif (area_of_item_scanned < large_box_area):
     print("Category")
     print('─' * 20)
     print("Item Category: Large")
-else:
+elif (user_input <3 ):
     print ("Item Category is Extra-Large, Please Kindly Proceed to General Chute for Deposit Instead")
-
 
 
 itemId = input("Please enter the item id: ")
