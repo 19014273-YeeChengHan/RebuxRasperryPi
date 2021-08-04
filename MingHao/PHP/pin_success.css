@@ -1,0 +1,77 @@
+:root {
+  --color-black: #2a2a2a;
+  --color-text: #a9a9a9;
+  --color-light: #fff;
+  --color-text-light: #444;
+  --font-base-family: 'Manrope', 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --line-height: 1.2;
+  /**
+ * utils
+ */
+}
+
+.font-600, .main .main__button {
+  font-weight: 600;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: var(--font-base-family, sans-serif);
+  background: var(--color-light);
+  color: var(--color-black);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-rows: 0.5fr repeat(9, 1fr);
+  line-height: var(--line-height);
+  padding: 0 0 0 5rem;
+  /**
+ * FLOW UTILITY
+ */
+}
+.flow {
+  --metric-rhythm: 2rem;
+  --flow-space: var(--metric-rhythm);
+}
+.flow > * + * {
+  margin-top: 1em;
+  margin-top: var(--flow-space);
+  /**
+ * HEADER
+ */
+}
+
+.section__img {
+  margin-top: 1rem;
+  grid-area: 2 / 2 / 6 / 3;
+  /**
+* MAIN
+*/
+}
+.main {
+  grid-area: 3 / 1 / -1 / 2;
+}
+.main .main__heading {
+  font-size: 3.6rem;
+  max-width: 13ch;
+  line-height: 1.4;
+}
+.main .main__sub {
+  color: var(--color-text);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  max-width: 38ch;
+}
+.main .main__button {
+  background: var(--color-black);
+  color: var(--color-light);
+  border-radius: 900px;
+  font-size: 0.75rem;
+  width: 10.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  line-height: 1.4;
+}
