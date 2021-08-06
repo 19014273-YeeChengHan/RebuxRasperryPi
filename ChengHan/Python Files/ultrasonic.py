@@ -9,15 +9,13 @@ conn = mysql.connector.connect(
     database = "RebuxDB"
 )
 
-
 cursor = conn.cursor()
-
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 def multiplyList(myList) :
-
+     
     # Multiply elements one by one
     result = 1
     for x in myList:
@@ -35,21 +33,24 @@ box_length = 20.5
 final_list = []
 
 #Ask User for Number of Sides Item has
+user_input =int(input('Please enter number of sides, needed to be recorded: '))
+if user_input  >3   :
+    print("Please do not input more than 3 sides   ");
 
-user_input = int(input('Please enter number of sides, needed to be recorded: '))
-if user_input >3 :
-    print("Please do not input more than 3 sides")
-while i < user_input and user_input <3:
+
+
+
+while i < user_input and user_input <=3 :
     print ("Measuring Side "  + str((i+1)) + "........")
 
     #Initalise Varaiables for inner loop use.
     inner_i = 0
     reading_list = []
-
+   
     while inner_i < 10:
         GPIO.setup(TRIG,GPIO.OUT)
         GPIO.setup(ECHO,GPIO.IN)
- 	GPIO.output(TRIG,False)
+        GPIO.output(TRIG,False)
 
         time.sleep(0.2)
         GPIO.output(TRIG,True)
@@ -68,29 +69,28 @@ while i < user_input and user_input <3:
 
         #additional of 2.5 cm added to reading to compensate inaccuracy of sensor caused by physical height of sensor.
         distance = distance + 2.4
-
-
-   	#// Commenting this distance out since this data is redundant
+        
+        #// Commenting this distance out since this data is redundant
         #print (distance)
         reading_list.append(distance)
-
+        
         if (inner_i == 9):
             avg_value = round(sum(reading_list) / len(reading_list),1)
-
+            
             #minus off the reading based on the physical environment length, to find out length of object side we are measuring
             final_side_length = box_length - avg_value
             final_list.append(round(final_side_length,1))
-
+        
         inner_i = inner_i + 1
-
-        if (inner_i == 9 and i != int(user_input-1)):
+        
+        if (inner_i == 9 and i != int(user_input-1)):    
             print("**PLEASE SWITCH TO NEW SIDE FOR MEASUREMENT NOW**")
-
+        
         #sleep required here to ensure data accuracy of reading. As we capturing 10 seconds and 10 data per reading of side
         time.sleep(1)
 
-
-    time.sleep(5)
+    
+    time.sleep(5)  
 
     i = i + 1
 
@@ -123,7 +123,7 @@ large_box_area = 4310.1
 
 area_of_item_scanned = multiplyList(final_list)
 
-if (area_of_item_scanned < small_box_area and user_input <3):
+if (area_of_item_scanned < small_box_area and user_input <=3):
     print('─' * 20)
     print("Dimension")
     print('─' * 20)
@@ -135,10 +135,10 @@ if (area_of_item_scanned < small_box_area and user_input <3):
             count = count + 1
     print('─' * 20)
     print("Category")
-    print('─' * 20)
+    print('─' * 20) 
     print("Item Category: Small")
 
-elif (area_of_item_scanned <  medium_box_area and user_input <3):
+elif (area_of_item_scanned <  medium_box_area and user_input <=3):
     print('─' * 20)
     print("Dimension")
     print('─' * 20)
@@ -150,10 +150,10 @@ elif (area_of_item_scanned <  medium_box_area and user_input <3):
             count = count + 1
     print('─' * 20)
     print("Category")
-    print('─' * 20)
+    print('─' * 20) 
     print("Item Category: Medium")
 
-elif (area_of_item_scanned < large_box_area and user_input <3):
+elif (area_of_item_scanned < large_box_area and user_input<=3):
     print('─' * 20)
     print("Dimension")
     print('─' * 20)
@@ -167,22 +167,24 @@ elif (area_of_item_scanned < large_box_area and user_input <3):
     print("Category")
     print('─' * 20)
     print("Item Category: Large")
-elif (user_input <3 ):
+
+elif (user_input <=3 ):
     print ("Item Category is Extra-Large, Please Kindly Proceed to General Chute for Deposit Instead")
 
 
-itemId = input("Please enter the item id: ")
 
-query = "UPDATE Item SET dimension = {0} WHERE item_id  = {1}"
-full_query = str(query.format(dimension, itemId))
-
-cursor.exceute(full_query)
-
-
-cursor.close()
-conn.commit()
-conn.close()
+    full_str = ' '.join([str(elem) for elem in final_list])
 
 
 
+    itemId = input("Please enter the item id: ")
 
+    query = "UPDATE Item SET dimension = '{0}'  WHERE item_id  = {1}"
+    full_query = str(query.format(full_str, itemId))
+
+    cursor.execute(full_query)
+
+
+    cursor.close()
+    conn.commit()
+    conn.close()
