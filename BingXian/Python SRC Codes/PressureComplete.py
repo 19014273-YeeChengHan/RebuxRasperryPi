@@ -116,7 +116,7 @@ while second > 0:
 #Doing a loop to check and find the highest force
     for i in range(len(forcelist)):
         if forcelist[i] > f:
-            f= forcelist[i]
+            f = forcelist[i]
 
     # time function here
     mins = second // 60
@@ -125,14 +125,42 @@ while second > 0:
     print("Time: " + timer + "\n")
     time.sleep(1)
     second -= 1
+    
 
 itemId = input("Please enter the item id: ")
 
-query = "UPDATE Item SET weight = {0} WHERE item_id = {1};"
-full_query = query.format(f,itemId) 
+if itemId.isdigit() == True:
+    if len(itemId) == 4:
+        user_query = "SELECT item_id FROM Item WHERE item_id = {0}"
+        full_user_query = user_query.format(itemId)
+        cursor.execute(full_user_query)
+        for (item_id) in cursor:
+            
+            i, = item_id
+            
+            list = []
+            list.append(i)
+        
+            
+            
+            if len(list) == 1:
+                    
+        
+                query = "UPDATE Item SET weight = {0} WHERE item_id = {1};"
+                full_query = query.format(f,itemId) 
 
-cursor.execute(full_query)
+                cursor.execute(full_query)
 
-cursor.close()
-conn.commit()
-conn.close()
+                cursor.close()
+                conn.commit()
+                conn.close()
+                
+           
+            else:
+                print("The item id you entered is not in the database. Please try again")
+       
+
+    else: 
+        print("User id should only consist of 4 digit. Please enter again!")
+else:
+    print("Please enter numbers instead of alphabet or other special characters")
